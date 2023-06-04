@@ -1,29 +1,54 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text,KeyboardAvoidingView, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './components/Screens/HomeScreen';
 import MapsScreen from './components/Screens/MapsScreen';
+import RideOptionsCard from './components/Screens/RideOptionsCard'
+import NavigateCard from './components/Screens/NavigateCard';
 import { Provider } from 'react-redux'
 import { Store } from './redux/Store'
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import FetchApiCall from './components/APIs/fetchApiCall';
+import { setDestination,setOrigin,SetDestination } from '../AwesomeProject/redux/Slices/NavSlice'
 
 const App = () => {
 const Stack = createNativeStackNavigator();
 
+
   return (
-    <Provider store={Store}>  
+<>
+<Provider store={Store}>  
+    <SafeAreaProvider>
     <NavigationContainer>
+      <KeyboardAvoidingView 
+      behavior={Platform.OS==="ios"?"padding":"height"}
+      style={{flex:1}}>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} options={{
+
+      {/* <Stack.Screen name="FetchApiCall" component={FetchApiCall} options={{
+          headerShown:false
+        }}/> */}
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{
           headerShown:false
         }}/>
-         <Stack.Screen name="MapsScreen" component={MapsScreen} options={{
+        <Stack.Screen name="MapsScreen" component={MapsScreen} options={{
           headerShown:false
         }}/>
+         <Stack.Screen name="RideOptionsCard" component={RideOptionsCard} options={{
+          headerShown:false
+        }}/>
+        <Stack.Screen name="NavigateCard" component={NavigateCard} options={{
+          headerShown:false
+        }}/>
+        
       </Stack.Navigator>
+      </KeyboardAvoidingView>
     </NavigationContainer>
+    </SafeAreaProvider>
     </Provider>
 
+    </>
   )
 }
 //for google maps goto https://github.com/FaridSafi/react-native-google-places-autocomplete
@@ -45,4 +70,6 @@ const Stack = createNativeStackNavigator();
 //npm i react-native-dotenv
 //after install of dotenv goto file babelconfig
 // if you want fresh install all Delete Node modules by command  rm -rf node_modules
+// to use gep location in react native
+// npm install geolib --save
 export default App
